@@ -1,0 +1,16 @@
+/*
+ * Empty C++ Application
+ */
+
+/***************************** Include Files *********************************/
+#include "xparameters.h"
+#include "xgpio.h"
+
+/************************** Variable Definitions *****************************/
+XGpio GpioLed; /* The Instance of the GPIO Driver */
+XGpio GpioSwitch; /* The Instance of the GPIO Driver */
+
+int main()
+{
+	return 0;
+}

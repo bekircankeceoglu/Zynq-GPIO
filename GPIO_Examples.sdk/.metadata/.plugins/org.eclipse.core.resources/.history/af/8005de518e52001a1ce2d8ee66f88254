@@ -1,0 +1,19 @@
+/*
+ * Empty C++ Application
+ */
+
+/***************************** Include Files *********************************/
+#include "xparameters.h"
+#include "xgpio.h"
+
+#define GPIO_LED_ID  XPAR_AXI_GPIO_1_BASEADDR
+#define GPIO_SWITCH_ID  XPAR_AXI_GPIO_2_BASEADDR
+
+/************************** Variable Definitions *****************************/
+XGpio GpioLed; /* The Instance of the GPIO Driver */
+XGpio GpioSwitch; /* The Instance of the GPIO Driver */
+
+int main()
+{
+	return 0;
+}

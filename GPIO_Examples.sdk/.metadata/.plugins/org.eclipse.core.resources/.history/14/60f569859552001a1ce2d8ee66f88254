@@ -1,0 +1,94 @@
+/*
+ * Empty C++ Application
+ */
+
+/***************************** Include Files *********************************/
+#include "xparameters.h"
+#include "xgpio.h"
+#include "sleep.h"
+
+#define GPIO_LED0_ID  XPAR_AXI_GPIO_0_DEVICE_ID
+#define GPIO_LED1_ID  XPAR_AXI_GPIO_1_DEVICE_ID
+#define GPIO_SWITCH_ID  XPAR_AXI_GPIO_2_DEVICE_ID
+
+/************************** Prototype Functions *****************************/
+void initLED();
+void initSWITCH();
+
+/************************** Variable Definitions *****************************/
+XGpio GpioLed0; /* The Instance of the GPIO Driver */
+XGpio GpioLed1; /* The Instance of the GPIO Driver */
+XGpio GpioSwitch; /* The Instance of the GPIO Driver */
+
+int main()
+{
+
+	initLED();
+	initSWITCH();
+
+	uint8_t counter = 0;
+	u32 status   = 0;
+	// inf. loop
+	while(1)
+	{
+		counter++;
+		counter = counter % 2;
+		if(counter == 1)
+		{
+			XGpio_DiscreteWrite(&GpioLed0, 1, 1);
+		}
+		else
+		{
+			XGpio_DiscreteWrite(&GpioLed0, 1, 0);
+		}
+
+		usleep(1000000);
+
+		// read switch gpio
+		status = XGpio_DiscreteRead(&GpioSwitch, 1);
+
+		// on led2 if switch is on
+		if(status == 1)
+		{
+			XGpio_DiscreteWrite(&GpioLed1, 1, 1);
+		}
+		else
+		{
+			XGpio_DiscreteWrite(&GpioLed1, 1, 0);
+		}
+	}
+	return 0;
+}
+
+void initLED()
+{
+	// initialize the led
+	int status0 = XGpio_Initialize(&GpioLed0, GPIO_LED0_ID);
+
+	// set channel 1 as output
+	XGpio_SetDataDirection(&GpioLed0, 1, 0);
+
+	// set low
+	XGpio_DiscreteWrite(&GpioLed0, 1, 0);
+
+	// initialize the led
+	int status1 = XGpio_Initialize(&GpioLed1, GPIO_LED0_ID);
+
+	// set channel 1 as output
+	XGpio_SetDataDirection(&GpioLed1, 1, 0);
+
+	// set low
+	XGpio_DiscreteWrite(&GpioLed1, 1, 0);
+}
+
+void initSWITCH()
+{
+	// initialize the led
+	int status = XGpio_Initialize(&GpioSwitch, GPIO_SWITCH_ID);
+
+	// set channel 1 as input
+	XGpio_SetDataDirection(&GpioSwitch, 1, 1);
+
+	// set low
+	XGpio_DiscreteWrite(&GpioSwitch, 1, 0);
+}
